@@ -1,0 +1,19 @@
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var scoreOfParentheses = function (s) {
+  let st = [];
+  let score = 0;
+  for (let i = 0; i < s.length; ++i) {
+    if (s[i] === "(") {
+      st.push(score);
+      score = 0;
+    } else {
+      score = st.pop() + Math.max(2 * score, 1);
+    }
+  }
+  return score;
+};
+
+console.log(scoreOfParentheses("(()())")); // 1
