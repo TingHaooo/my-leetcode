@@ -3,28 +3,18 @@
  * @return {number}
  */
 var maxArea = function (height) {
-  let maxArea = 0;
+  let area = 0;
+  let l = 0;
+  let r = height.length - 1;
 
-  // loop 高度
-  for (let i = 0; i < height.length; ++i) {
-    // 往左右查找線，假如線小於等於高度，計算面積比大小
-    // 右邊
-    for (let k = i + 1; k < height.length; ++k) {
-      if (height[k] <= height[i]) {
-        const area = height[k] * (k - i);
-        maxArea = Math.max(area, maxArea);
-      }
-    }
-    // 左邊
-    for (let j = i - 1; j >= 0; --j) {
-      if (height[j] <= height[i]) {
-        const area = height[j] * (i - j);
-        maxArea = Math.max(area, maxArea);
-      }
-    }
+  while (r > l) {
+    let minH = Math.min(height[l], height[r]);
+    area = Math.max(area, minH * (r - l));
+
+    while (r > l && height[l] <= minH) l++;
+    while (r > l && height[r] <= minH) r--;
   }
-
-  return maxArea;
+  return area;
 };
 
 console.log(maxArea([1, 1])); // 1
