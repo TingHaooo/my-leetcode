@@ -20,9 +20,11 @@ var minDiffInBST = function (root) {
     inOrderTraversal(root.right);
   };
 
+  inOrderTraversal(root);
+
   let minDiff = Infinity;
   for (let i = 1; i < tree.length; ++i) {
-    Math.min(minDiff, tree[i] - tree[i - 1]);
+    minDiff = Math.min(minDiff, tree[i] - tree[i - 1]);
   }
 
   return minDiff;
