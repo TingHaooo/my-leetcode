@@ -5,39 +5,41 @@
  *     this.next = (next===undefined ? null : next)
  * }
  */
+
+function ListNode(val, next) {
+  this.val = val === undefined ? 0 : val;
+  this.next = next === undefined ? null : next;
+}
+
 /**
  * @param {ListNode[]} lists
  * @return {ListNode}
  */
-
-//  var mergeTwoLists = function (list1, list2) {
-//   if (list1 === null && list2 === null) return null;
-//   if (list1 === null) return list2;
-//   if (list2 === null) return list1;
-
-//   if (list1.val >= list2.val) {
-//     list2.next = mergeTwoLists(list1, list2.next);
-//     return list2;
-//   } else {
-//     list1.next = mergeTwoLists(list1.next, list2);
-//     return list1;
-//   }
-// };
 var mergeKLists = function (lists) {
-  if (lists.every((l) => !l)) return null;
+  if (!lists.filter((n) => n).length) return null;
 
-  let min = Infinity;
-  let minI = 0;
+  let curIndex = 0;
+  let curNode = null;
+  let curValue = Infinity;
   for (let i = 0; i < lists.length; ++i) {
-    if (lists[i].val < min) {
-      min = lists[i].val;
-      minI = i;
+    if (!lists[i]) continue;
+    const list = lists[i];
+    if (list.val < curValue) {
+      curValue = list.val;
+      curNode = list;
+      curIndex = i;
     }
   }
-  const newList = [...lists];
-  lists[minI].next = mergeKLists([
-    lists[minI].next,
-    ...newList.splice(minI, 1),
-  ]);
-  return lists[minI];
+
+  lists[curIndex] = lists[curIndex].next;
+  curNode.next = mergeKLists(lists);
+
+  return curNode;
 };
+
+const list1 = new ListNode(3, null);
+const list2 = new ListNode(2, new ListNode(5, null));
+
+console.log(mergeKLists([])); //[]
+console.log(mergeKLists([null])); //[]
+console.log(mergeKLists([list1, list2]));
